@@ -1,0 +1,108 @@
+                                          Node JS
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+What is Node.js?
+
+Why Node.js?
+
+How to start writing apps on Node.js
+///////////////////////////////////////////////////////////////////////////////////////
+
+What is Node.js?
+   Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine.
+
+What is V8?
+  V8 is Google’s open source high-performance JavaScript and WebAssembly engine, written in C++. 
+It is used in Chrome and in Node.js, among others. It implements ECMAScript and WebAssembly
+
+Java script core Features:
+
+1.javascript programs are executed by javascript engine.
+
+Java Script Engine Design:
+
+-Single threaded - never allows to create application threads.
+
+Having single thread , how we can run multiple tasks at the same time?
+ -Async Programming
+ -Callback Programming
+ -Worker thread model.
+
+ajax call - async java script and xml
+
+java
+  -connect database - thread
+  -start socket - thread
+
+ 
+Blocking and NonBlocking :
+
+ Blocking means, if a thread is created which is blocked for some io like database,network connection.
+if more blocked threads will lead , performance issue, may crash the whole server.
+............................................................................................
+
+Blocking and Server side Java(Tomcat)
+......................................
+
+Traditionally tomcat(jvm), uses multi threaded model.
+Each request is treated as a single thread, each thread may do some io operation
+
+
+Non Blocking:
+ thread is not blocked for any request, rather which uses worker-thread model.
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+Node Arch idea:
+
+ - single threaded
+ - nonblocking networking application
+ - async programming using libuv.
+ - using javascript language.
+
+             Node is non blocking,async,event driven io platform.
+////////////////////////////////////////////////////////////////////////////////////////////
+
+Node architecture:
+..................
+
+JAVASCRIPT Modularity : Commonjs
+
+Node platform apis 
+  -event emitters
+  -io
+  -network - web
+NPM
+
+Frameworks
+ -REST API
+ -Micro services 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -678,6 +678,344 @@ login('admin', 'admin', () => console.log(`Login success`)
 
 login('foo', 'bar', () => console.log(`Login success`)
     , () => console.log(`Login failed`));
+////////////////////////////////////////////////////////////////////////////////////////////
+
+Object based Programming:
+.........................
+
+///object template - class...
+//how create object ; using function.
+
+function Employee() {
+    //declare instance variables and methods
+    this.id = 1;
+    this.name = 'ram';
+    //methods
+    this.calculateSalary = function () {
+        return 1000;
+    }
+}
+//create object...
+//emp is reference variable
+//new is operator 
+//Employee() - constructor call - function call
+let emp = new Employee();
+console.log(`id ${emp.id}`)
+console.log(`Name ${emp.name}`)
+console.log(`Salary ${emp.calculateSalary()}`)
+
+// ES  6 Class
+
+class Customer {
+    //declare instance variables and methods
+    id = 1;
+    name = 'ram';
+    //methods
+    // calculateSalary = function () {
+    //     return 1000;
+    // }
+    // calculateSalary = () => {
+    //     return 1000;
+    // }
+    calculateInvoice() {
+        return 1000;
+    }
+
+}
+let cust = new Customer();
+console.log(`id ${cust.id}`)
+console.log(`Name ${cust.name}`)
+console.log(`Salary ${cust.calculateInvoice()}`)
+
+////////////////////////////////////////////////////////////////////////////////
+//literal syntax.
+//variable: literal
+
+let product = {
+    id: 1,
+    name: 'phone',
+    // getQty: function () {
+    //     return 100;
+    // }
+    getQty: () => {
+        return 100;
+    },
+    calculateInvoice() {
+        return 1000;
+    }
+};
+console.log(`id ${product.id}`)
+console.log(`Name ${product.name}`)
+console.log(`Qty ${product.getQty()}`)
+console.log(`Invoice ${product.calculateInvoice()}`)
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//how to initalize the state
+//hard coded
+//after object creation
+//during constructor call.
+
+//hardcoded
+// function Employee() {
+//     //declare instance variables and methods
+//     this.id = 1;
+//     this.name = 'ram';
+//     //methods
+//     this.calculateSalary = function () {
+//         return 1000;
+//     }
+// }
+
+function Employee(id = 1, name = 'ram') {
+    //declare instance variables and methods
+    this.id = id;
+    this.name = name;
+    //methods
+    this.calculateSalary = function () {
+        return 1000;
+    }
+}
+
+
+let emp = new Employee();
+console.log(`id ${emp.id}`)
+console.log(`Name ${emp.name}`)
+console.log(`Salary ${emp.calculateSalary()}`)
+//after object creation
+emp.id = 9999;
+emp.name = 'Subramaian';
+console.log(`id ${emp.id}`)
+console.log(`Name ${emp.name}`)
+
+//constructor parameter
+emp = new Employee(23, 'John')
+console.log(`id ${emp.id}`)
+console.log(`Name ${emp.name}`)
+///////////////////////////////////////////////////////////////////////////////////
+
+// class Customer {
+//     //declare instance variables and methods
+//     id = 1;
+//     name = 'ram';
+//     calculateInvoice() {
+//         return 1000;
+//     }
+// }
+class Customer {
+    //declare instance variables and methods
+    constructor(id = 1, name = 'ram') {
+        this.id = id;
+        this.name = name;
+    }
+    calculateInvoice() {
+        return 1000;
+    }
+}
+
+let cust = new Customer();
+console.log(`id ${cust.id}`)
+console.log(`Name ${cust.name}`)
+console.log(`Salary ${cust.calculateInvoice()}`)
+cust.id = 19999;
+cust.name = 'Karthik'
+console.log(`id ${cust.id}`)
+console.log(`Name ${cust.name}`)
+
+cust = new Customer(23, 'Miller')
+console.log(`id ${cust.id}`)
+console.log(`Name ${cust.name}`)
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+Object relationship:
+
+1.HAS-A
+2.IS-A - inheritance
+
+//HAS-A - Class , literal
+
+class Product {
+    constructor(id = 1, name = 'phone') {
+        this.id = id;
+        this.name = name;
+    }
+}
+class Order {
+    constructor(orderId = 'A001', product = new Product()) {
+        this.orderId = orderId
+        //has-a
+        this.product = product;
+
+    }
+}
+let product = new Product();
+let order = new Order();
+console.log(order)
+//
+order = new Order('A002', new Product(1, 'Books'))
+console.log(order)
+//////////////////////////////////////////////////////////////////////////////////
+//literal 
+
+let myorder = {
+    orderId: 'A001',
+    //has-a , nested object
+    product: {
+        id: 'P001',
+        name: 'MyProduct'
+    }
+}
+console.log(myorder)
+////////////////////////////////////////////////////////////////////////////////////////////
+IS -A:
+......
+inheritance :
+
+1.using functions
+2.using class
+3.using literal object
+
+
+class Account {
+    constructor(id = 'A00010000') {
+        this.id = id;
+        console.log('account')
+    }
+    deposit() {
+        return 1.5;
+    }
+}
+class SavingsAccount extends Account {
+    constructor(id) {
+        super(id);
+        console.log('SavingsAccount')
+    }
+    deposit() {
+        return 2.5 * super.deposit();
+    }
+}
+let sb = new SavingsAccount('A5554444');
+console.log(`Id ${sb.id}  ${sb.deposit()}`)
+//////////////////////////////////////////////////////////////////////////////////////////
+
+/object destructing ; breaking object into properties.
+//object properties ; instance variables and methods.
+
+//object destructing
+// function printEmployee(employee) {
+//     console.log(`id : ${employee.id}`)
+//     console.log(`name : ${employee.name}`)
+//     console.log(`City : ${employee.address.city}`)
+// }
+
+// function printEmployee(employee) {
+//     //object destructure ; breaking object properties
+//     const { id, name, address } = employee;
+//     console.log(`id : ${id}`)
+//     console.log(`name : ${name}`)
+//     console.log(`City : ${address.city}`)
+// }
+// function printEmployee({ id, name, address: { city } }) {
+//     //object destructure ; breaking object properties
+//     console.log(`id : ${id}`)
+//     console.log(`name : ${name}`)
+//     console.log(`City : ${city}`)
+// }
+const printEmployee = ({ id, name, address: { city } }) => {
+    //object destructure ; breaking object properties
+    console.log(`id : ${id}`)
+    console.log(`name : ${name}`)
+    console.log(`City : ${city}`)
+}
+
+
+printEmployee({ id: 1, name: 'Subramanian', address: { city: 'coimbatore' } })
+////////////////////////////////////////////////////////////////////////////////////
+
+//Return object from function with destructuring
+
+let getProduct = () => {
+    return {
+        id: 'A001',
+        name: 'MyProduct'
+    }
+};
+console.log(getProduct())
+
+//only return statment
+getProduct = () => ({
+    id: 'A001',
+    name: 'MyProduct'
+});
+console.log(getProduct())
+//dynamic parameters
+getProduct = (id = 'A001', name = 'MyProduct') => ({
+    id: id,
+    name: name
+});
+console.log(getProduct())
+console.log(getProduct('A004', 'Phone'))
+
+//simpilfied version
+//if local variable and instance variable same;
+//left : right  === equal =>make it one
+getProduct = (id = 'A001', name = 'MyProduct') => ({
+    id,
+    name
+});
+console.log(getProduct('A004', 'Phone'))
+
+/////////////////////////////////////////////////////////////////////////////
+//how to use destrucing for classes
+class OrderService {
+    constructor() {
+    }
+    findAll() {
+        return 'findAll'
+    }
+    save() {
+        return 'save'
+    }
+}
+let service = new OrderService();
+console.log(service.findAll());
+console.log(service.save());
+
+//object destructed syntax
+let { findAll, save } = new OrderService();
+console.log(findAll());
+console.log(save());
+
+///&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
