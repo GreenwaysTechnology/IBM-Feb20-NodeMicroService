@@ -1,0 +1,718 @@
+2.5 days - nodejs - es 6
+
+1.5 days - micro services
+
+20 tea
+
+1 hrs
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+lab setup:
+
+1. node js
+2. vs code
+//////////////////////////////////////////////////////////////////////////////////////////
+
+java script:
+
+ECMA SCRIPT.
+
+JAVA SCRIPT 1.0 -> es 1
+es 3 -1999
+es 4 -2006
+es 5 -2007
+es 6 -2012-2015. - ecma 2015
+es6 7,8,9....
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
+What is javascript?
+
+java script is a programming language.
+
+java script is object based,functional style,event driven programming language.
+
+javascript was created to build web application in the browser.
+
+Today javascript is every where.
+
+java script was created in Netscap(fire fox) by briden eich.
+
+javascript is dynamic typed/weak typed programming languages.
+
+Dynamic typed, the type of variable not understood during compile time rather runtime.
+
+
+Learning path:
+
+es 6:
+
+1. java  script LANGUAGE fundamentals
+2. java script functional programming 
+3. Object based features and implementation
+.................................................................................................
+4. DOM 
+5. NETWORK Progamming - ajax
+etc....
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Javascript program life cyle:
+
+1.source code
+   programm.js
+..................................
+javascript runtime/javascript virtual machine/javascript engine.
+
+2.compile code
+
+3.Execution
+.......................................
+javascript runtime :
+
+where you are running javascript code.
+
+1. embeded runtime.
+   the runtime embeded into another software.
+ browser
+v8-name of the runtime, inside chrome.
+
+2.standalone runtime.
+
+  node js -v8.
+
+1. java  script fundamentals
+
+variable,types, values.
+
+javascript is untyped/dyamic typed language.
+
+keyword variableName=value(literals)
+
+var | let | const | this | variablename=literal
+
+var-es5
+let and const -es6 to replace var.
+
+this - for object variables
+
+literals - values: based on literal only the type of variable is decided during runtime.
+
+types of literals
+
+1.string
+2.number
+3.boolean
+4.undefined
+5.nan
+6.infinity
+7.null
+8.function
+9.object
+
+types ;
+
+1.string
+2.number
+3.boolean
+4.undefined
+5.function
+6.object
+
+
+select your path ; c / d
+
+c: mkdir nodejs
+
+cd nodejs 
+mkdir es6-apps
+cd es6-apps
+mkdir src
+cd src / index.js
+
+
+how to run.
+
+ node  src/index.js
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+strings : "" ,'',``(es6)
+
+`` - back tick notation:
+
+-string interpolation
+-multi line string literal
+
+var firstName = "Subramanian";
+let lastName = 'Murugan';
+console.log(" Name " + firstName + " " + lastName);
+console.log(" Name ", firstName, " ", lastName);
+//String interpolation : es 6 ;  String template literal
+console.log(`Name ${firstName} ${lastName}`);
+//multi line strings:
+let title = 'IBM'
+let doc = "<html>" +
+    "<head>" +
+    "<title>" + title + "</title>" +
+    "</head>" +
+    "<body>" +
+    "<h1>Hello</h1>" +
+    "</body>";
+console.log(doc)
+
+let docOne = `<html>
+           <head>
+            <title>${title}</title>
+            </head>
+          <body>
+            <h1>Hello</h1>
+          </body>
+        `;
+console.log(docOne)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Numbers:
+
+let salary = 10000;
+console.log(`Salary ${salary}`);
+let totalSalary = salary * 100
+console.log(`Total salary ${salary}`);
+//////////////////////////////////////////////////////////////////////////////////////////
+
+boolean:
+
+//booleans ; true /false
+let isActive = true; //false
+console.log(`isActive ${isActive}`);
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+undefined:
+.........
+//////////////////////////////////////////////////////////////////////////////
+//undefined; if variable declared but not initalized with any valid literals
+let cost;
+console.log(`cost ${cost}`);
+/////////////////////////////////////////////////////////////////////////////////
+
+//NaN - not a number; it is numerical error code.during numerical computation, js engine
+//may throw error - NaN ; 
+//nan is not valid value, it is error , need to be fixed if you get.
+
+when you will get NaN.
+1.if you do compuation against undefined variables.
+2. when you do type conversion ; string to number.
+	type conversion; implict and explict.  String to Number
+
+
+//type conversion
+//qty is now string because "" but value is number
+let qty = "1000"; // string will be converted into number first 
+//implicit conversion; before computation, variable is converted into number...
+let totalQty = qty * 100;
+console.log(`Total Qty ${totalQty}`);
+//explicit conversion
+totalQty = parseFloat(qty) * 100;
+console.log(`Total Qty ${totalQty}`);
+
+
+
+NAN:
+let cost; //undefined
+let totalCost = cost * 100;
+console.log(`Total Cost ${totalCost}`);
+
+//type conversion
+//qty is now string because "" but value is number
+let qty = "1000"; // string will be converted into number first 
+//implicit conversion; before computation, variable is converted into number...
+let totalQty = qty * 100;
+console.log(`Total Qty ${totalQty}`);
+//explicit conversion
+totalQty = parseFloat(qty) * 100;
+console.log(`Total Qty ${totalQty}`);
+
+//NaN and typeconversion
+let count="$10";
+let totalCount = count * 12;
+console.log(`Total Count ${totalCount}`);
+
+Infinity:
+
+let avg = 100/ 0;
+console.log(`Avg ${avg}`);
+.............................................................................................
+
+Advanced boolean :
+...................
+
+What can be true or false?
+
+decision making : if..else
+
+in javascript is every thing is true execept the following values 
+
+Falsy values
+
+ * 
+ *  1.boolean false
+ *  2.Empty string "" ,''
+ *  3.0
+ *  4.undefined
+ *  5.NaN
+ *  6.null
+ */
+let isActive = true;
+
+if (isActive) {
+    console.log('Active')
+} else {
+    console.log('inactive')
+}
+
+let firstName=""
+if (firstName) {
+    console.log('Name is Present')
+} else {
+    console.log('Name is not  Present')
+}
+
+let isActive = true;
+if (isActive) {
+    console.log('active')
+} else {
+    console.log('in active')
+}
+let start = 10;
+if (start) {
+    console.log('start')
+} else {
+    console.log('no start')
+}
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+//knowing type of an variable/literal; 
+//typeof operator returns typeof literal/variable
+
+let a = 10;
+console.log(`a type is ${typeof a}`);
+a = 'Hello';
+console.log(`a type is ${typeof a}`);
+a = true;
+console.log(`a type is ${typeof a}`);
+a = undefined;
+console.log(`a type is ${typeof a}`);
+a = 10 * undefined; //NaN --->number type
+console.log(`a type is ${typeof a}`);
+a = 100 / 0;
+console.log(`a type is ${typeof a}`);
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//operators;
+//equal operators 
+//  ==, === ,!=,!==
+
+let a = 100;
+let b = 100;
+if (a == b) {
+    console.log('equal')
+} else {
+    console.log('not equal')
+}
+
+
+//value is 100 but type is number
+let x = "100";
+let y = 100;
+if (x === y) {
+    console.log('equal')
+} else {
+    console.log('not equal')
+}
+
+/**
+ * == compares only value
+ * === compares value + type ->recommended operator.
+ */
+//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+
+//tenary operator ; to replace if ...else lader
+
+x === y ? console.log('equal') : console.log('not equal')
+
+let firstName = '';
+
+let response = firstName ? 'You have firstName' : 'You dont have'
+console.log(response);
+/////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////
+
+let message = '';
+
+/**
+ * if first operand (message) is truthy,then result would be first itself,else second
+ */
+let result = message || 'hello'
+console.log(result);
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+//
+
+let isActive = true;
+let isEnabled = false
+let res = isActive || isEnabled;
+console.log(`The result is ${res}`)
+
+let greet='welcome';
+/**
+ * if first operand (greet) is truthy,
+ * then result would be first itself,else second
+ */
+let message = greet || 'Hello'
+
+console.log(message);
+///////////////////////////////////////////////////////////////////////////////////////////
+
+//let and var are same
+
+let a = 10;
+console.log(`a Value is ${a}`);
+a = 20;
+console.log(`a Value is ${a}`);
+
+//const ; read only; cant reinitalize
+
+const b =10;
+console.log(` b Value is ${b}`);
+b=90;
+console.log(` b Value is ${b}`);
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Functions:
+............
+
+//code is encapuslated inside function.
+
+//basic function declaration;
+//function is keyword to declare function
+//sayHello is name of the function
+//{} - function body
+
+
+function sayHello() {
+    //function body
+    console.log('Hello')
+}
+sayHello()
+//function with some logic
+function validate() {
+    let name = 'ram';
+    let password = 'ram';
+    let response = (name === 'ram') && (password === 'ram') ? 'valid' : 'invalid'
+    console.log(response);
+}
+validate();
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+Function args,parameters:
+..........................
+//message is variable : arg variable
+function sayHello(message) {
+    console.log(`Message is ${message}`)
+}
+
+//'Hello' is parameter
+sayHello('Hello');
+
+js is type less : no type , undefined.
+
+
+//message is variable : arg variable
+function sayHello(message) {
+    console.log(`Message is ${message}`)
+}
+
+//'Hello' is parameter
+sayHello('Hello');
+sayHello();
+
+//default args
+function multiply(a = 0, b = 0) {
+    let res = a * b;
+    console.log(`Result ${res}`)
+}
+multiply(10, 10)
+multiply();
+
+////
+Var Args:
+
+//message is variable : arg variable
+function sayHello(message) {
+    console.log(`Message is ${message}`)
+}
+
+//'Hello' is parameter
+sayHello('Hello');
+sayHello();
+
+//default args
+function multiply(a = 0, b = 0) {
+    let res = a * b;
+    console.log(`Result ${res}`)
+}
+multiply(10, 10)
+multiply();
+
+//i want function that , how many parameters i am going to pass, i dont know in advance
+//rest operator...(var args)
+function log(...message) {
+    console.log(message)
+}
+log('app')
+log('app', 'error')
+log('app', 'error', 'in myfile.txt')
+////////////////////////////////////////////////////////////////////////////////////////////
+
+Return value:
+//return values
+function getA() {
+    return 10; // return hardcoded value
+}
+let value = getA()
+console.log(value);
+console.log(getA())
+
+function getB() {
+    let b = 10;
+    return b; // return variable
+}
+console.log(getB());
+
+function calculate(a = 1, b = 1) {
+    return a * b; // return expression- computed value
+}
+console.log(calculate(4, 5))
+
+function isValid() {
+    return; // undefined
+}
+console.log(isValid() ? 'valid' : 'invalid')
+///////////////////////////////////////////////////////////////////////////////////////////
+
+JavaScript is functional programming :
+
+->function is value/literal like other values
+
+ let a =10;
+ a - variable
+ 10 -literal/value - numerical value.
+
+any value can be passed around -  as parameter, can return
+
+similar to 10 function is value.
+
+ - we can store function inside variable
+ - we can pass function as value to another function
+ - we can return function from another function.
+
+
+
+ "function declaration; function can be assigned to a variable.
+  once if you assign function to a variable , that variable can be used
+  to call /invoke that function."
+
+
+//way-1
+function sayHello(name = 'foo') {
+    console.log('hello', name);
+    return 'welcome'
+}
+//assign function to another variable
+let hello = sayHello;
+console.log(hello('subramanian'))
+
+//way 2
+//anonomous function ; funciton without name
+let greeter = function (message='bar') {
+    console.log(`${message}`)
+    return 'bar foo'
+};
+greeter();
+greeter('foo');
+console.log(greeter('subramanian'))
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+Function as parameter to another function: callbacks/async programming
+
+
+//a =10
+//b =20
+//a =x
+function add(a = 10, b = 20) {
+    return a + b;
+}
+
+let x = 10;
+let y = 90;
+add(x, y); //here we pass variables
+add(10, 20) // here we pass numbers - hardcoded values
+
+//////
+//function as parameter
+//greet = hai
+function sayHello(greet) {
+    greet('hello');
+}
+
+let hai = function (name = 'foo') {
+    console.log(`Hai ${name}`)
+};
+//passing function as parameter via variable
+sayHello(hai);
+
+//passing value
+sayHello(function (name = 'foo') {
+    console.log(`Hai inside ${name}`)
+})
+/////////////////////////////////////////////////////////////////////////////
+
+// string,string,fn,fn
+function login(username, password, success, failure) {
+    if (username === 'admin' && password === 'admin') {
+        success()
+    } else {
+        failure()
+    }
+}
+login('admin', 'admin', function () {
+    console.log(`Login success`)
+}, function () {
+    console.log(`Login failed`)
+});
+
+login('foo', 'bar', function () {
+    console.log(`Login success`)
+}, function () {
+    console.log(`Login failed`)
+});
+
+function sayGreet(){
+    return function(){
+        console.log('hello')
+    }
+}
+let res= sayGreet()
+res()
+/////////////////////////////////////////////////////////////////////////////////////////////
+ES 6 Function: Arrow function
+.............................
+
+//arrow functions
+//es 5 function literal
+let hello = function () {
+    console.log('hello')
+};
+hello();
+//arrow function simplied syntax of old function arrow.
+let hai = () => {
+    console.log('hai')
+};
+hai();
+//flavours of arrow function. 
+
+//1.if function has only single line body,drop {}
+hai = () => console.log('hai')
+hai();
+////args,parameters
+//mulitple args with default value
+let add = (a = 0, b = 0) => {
+    let res = a + b;
+    console.log(res);
+};
+add();
+add(10, 4)
+//single parameter without default value, drop ()
+let welcome = name => console.log(name);
+welcome('subramanian')
+///////////////////////////////////////////////////////////////////////////////
+//return statment
+let getStock = () => {
+    return 100;
+}
+console.log(getStock());
+//if arrow has return statment only, no more body,drop {} and return statement
+getStock = () => 100;
+console.log(getStock());
+/////////////////////////////////////////////////////////////////////////
+//single args, return the same
+let getMoney = value => value;
+console.log(getMoney(1222));
+//////////////////////////////////////////////////////////////////////////////////
+
+// function fooExecutor(myfoo) {
+//     myfoo();
+// }
+let fooExecutor = myfoo => myfoo();
+
+let foo = (name = 'foo') => console.log(`Hai ${name}`)
+//passing function as parameter via variable
+fooExecutor(foo);
+
+// string,string,fn,fn
+let login = (username, password, success, failure) => {
+    if (username === 'admin' && password === 'admin') {
+        success()
+    } else {
+        failure()
+    }
+}
+login('admin', 'admin', () => console.log(`Login success`)
+    , () => console.log(`Login failed`));
+
+login('foo', 'bar', () => console.log(`Login success`)
+    , () => console.log(`Login failed`));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
