@@ -64,7 +64,6 @@ Node Arch idea:
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 Node architecture:
-..................
 
 JAVASCRIPT Modularity : Commonjs
 
@@ -77,6 +76,741 @@ NPM
 Frameworks
  -REST API
  -Micro services 
+////////////////////////////////////////////////////////////////////////////////////
+
+Node is not only runtime but we call platform.
+
+Platform is nothing collection of many compoents
+
+
+Blocking apis
+
+Linux:
+
+1.read
+
+
+
+Non blocking implementation apis:
+
+Linux:
+
+1.select
+   select is the first api introduced to perform non blocking operations 
+   select has some drawabacks.
+
+2.poll 
+   poll api was introduced later in order to avoid some drawbacks in select.
+
+
+3.epoll
+   poll has some complexity in usage.
+   epoll is small event notification and non blocking framework.
+////////////////////////////////////////////////////////////////////////////////////////////
+1.v8 engine
+  Which is from goolgle.
+  Supports all javascript language spec.
+  Which was developed only for browser.
+  Node creator wanted to build web,file system io,network io application.
+  but there is no api available in javascript language.
+  who wanted to add new apis on v8.
+  V8 is written i C++.
+
+2.Node binding c layer:
+  node creator who created low level system calls to build io applications.
+  written c language
+ Node binding java script language which high level javascript apis 
+
+3.libvu
+
+ libuv is a multi-platform support library with a focus on asynchronous I/O. It was primarily developed for use by Node.js, but it’s also used by Luvit, Julia, pyuv, and others.
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+node apps - javascript apps:
+...........................
+
+Javascript modularity:
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+Modularity:
+..........
+
+In java Modularity , is presented via "Packages"
+
+Package organize the code  logically.
+
+Customer.java
+
+package com.ibm.cms
+
+public class Customer{}
+
+Java organizes code folders and files Physically.
+
+d:/javaapps/src/
+    com/ibm/cms/Customer.java
+
+
+What about javascript Modularity?
+
+ Javascript is file based modularity physically
+ but logically there is no such modularity at language level.
+
+ collection of variable declarations and function.
+
+Once js started growing in large scale, dev struck to organize code.
+
+2000, Smart developers started thinking about how to modualrize js code.
+ 
+
+Module design patterns came.
+
+1.Namespace design pattern : 2000 : jquery
+2.AMD -Async Module Defintion : dojo
+---------------------------------------------------------
+3.CJS - Common JS =  namespace + amd
+4.ES 6 Module design pattern  = amd + cjs
+------------------------------------------------------------
+5.System = AMD = CJS + ES 6
+6.UMD = NAMESPACE + AMD + CJS = ES 6
+
+
+only two design patterns are used in development
+
+1.CJS - Common JS =  namespace + amd
+2.ES 6 Module design pattern  = amd + cjs
+
+CJS ; implemented inside node js. node supports commonjs by default.
+
+I can organize the code , based on these patterns, but what about runtimes?
+  js runtime never suppport these patterns directly then each design pattern is lib.
+
+ Loaders : it is simple js lib to help link and load js files.
+
+
+lets start cjs first;
+......................
+
+cjs is built in node js.
+node supports cjs in built. no separate loader or linker is required
+but if you run cjs code on browsers , we need loaders.
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+Object augmentation:
+
+In javascript objects are simple map/dictionary.
+
+Since object is datastructure , we can add,delete,update,iterate object properties dynamically.
+ This is called as "Object augmentation".
+//object augmentation;
+
+//object has no any property ; empty object
+let product = {
+   id:1
+};
+console.log(product)
+//object augmentation: adding new property 
+product.name = "Phone"
+product.qty =100
+product.price=0;
+console.log(product)
+//object augmentation: update new property 
+//if property exits, it updates, if not , add 
+product.price=100;
+console.log(product)
+//object augmentation: remove new property 
+delete product.qty;
+console.log(product)
+//object augmentation ; iterate
+for(let prop in product){
+    console.log(prop,product[prop])
+}
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+COMMONJS : CJS
+
+Code sharing among files.
+
+What could be code?
+could be variable declaration,class declaration,function declaration.
+
+Linking files :
+
+
+cjs provides some keywords
+
+require() - function -  linking files
+
+exports,module.exports - built in variables  : code sharing
+
+
+How to link files?
+
+src/index.js
+
+require('./mylib')
+
+src/mylib.js
+
+console.log('mylib')
+
+How to share code?
+ variables,functions,class..
+
+exports:
+ -exports is built in variable.
+ -exports has some default value.
+
+require('file'): function call
+
+ -parameter is file name
+ -return value is literal object with respect to exports
+
+let myresult = require('file')
+
+The default value is empty literal object.
+//////////////////
+
+src/info.js
+
+//code sharing -  exports
+
+//exports = {}
+//augment empty object pointed by exports variable
+exports.message = "Hello"
+exports.rank=10
+exports.isActive=true;
+exports.doSomething = function(){
+    return "something"
+}
+exports.address = {
+    city:'Coimbatore',
+    state:'Tamil Nadu',
+}
+/////////////
+src/index.js
+// const res = require('./info')
+
+// console.log(res)
+
+// console.log(res.message,res.rank,res.isActive,res.doSomething())
+const { message, rank, isActive, doSomething, address: { city, state } } = require('./info');
+
+console.log(message, rank, isActive, doSomething(),city,state)
+///////////////////////////////////////////////////////////////////////////////////////////
+
+module.exports: another way of sharing code
+............................................
+
+exports vs module.exports
+
+1.exports will export the entire as single object.
+2.where as module.exports , wont export code as object, rahter which exports code as it is.
+
+module.exports will be suitable single exports.
+ -you have class
+ -you have function
+ -you have variable having arrays.
+
+with require() , will not return object,rather which returns what you have returned(fun,varible,object,class).
+
+
+src/GreeterService.js
+
+class GreeterService{
+    constructor(){
+        console.log('Greeter service is initlaized')
+    }
+    //biz apis
+    sayHai(){
+        return 'Hai'
+    }
+    sayHello(){
+        return 'Hello'
+    }
+    sayGreet(){
+        return 'Greet'
+    }
+}
+
+//here we pack class 
+//module.exports = GreeterService;
+//here we pack object
+module.exports = new GreeterService();
+
+src/index.js
+// const GreeterService = require('./GreeterService')
+
+// let service = new GreeterService();
+// console.log(service.sayHai());
+// console.log(service.sayGreet())
+
+const {sayGreet,sayHai} = require('./GreeterService');
+const {log} = console
+
+log(sayHai());
+log(sayGreet())
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+src/mock-data/users.js
+const USERS=[
+    {
+        id: 1,
+        name: "Leanne Graham",
+        username: "Bret",
+        email: "Sincere@april.biz",
+        address: {
+            street: "Kulas Light",
+            suite: "Apt. 556",
+            city: "Gwenborough",
+            zipcode: "92998-3874",
+            geo: {
+                lat: "-37.3159",
+                lng: "81.1496"
+            }
+        },
+        phone: "1-770-736-8031 x56442",
+        website: "hildegard.org",
+        company: {
+            name: "Romaguera-Crona",
+            catchPhrase: "Multi-layered client-server neural-net",
+            bs: "harness real-time e-markets"
+        }
+    },
+    {
+        id: 2,
+        name: "Ervin Howell",
+        username: "Antonette",
+        email: "Shanna@melissa.tv",
+        address: {
+            street: "Victor Plains",
+            suite: "Suite 879",
+            city: "Wisokyburgh",
+            zipcode: "90566-7771",
+            geo: {
+                lat: "-43.9509",
+                lng: "-34.4618"
+            }
+        },
+        phone: "010-692-6593 x09125",
+        website: "anastasia.net",
+        company: {
+            name: "Deckow-Crist",
+            catchPhrase: "Proactive didactic contingency",
+            bs: "synergize scalable supply-chains"
+        }
+    },
+    {
+        id: 3,
+        name: "Clementine Bauch",
+        username: "Samantha",
+        email: "Nathan@yesenia.net",
+        address: {
+            street: "Douglas Extension",
+            suite: "Suite 847",
+            city: "McKenziehaven",
+            zipcode: "59590-4157",
+            geo: {
+                lat: "-68.6102",
+                lng: "-47.0653"
+            }
+        },
+        phone: "1-463-123-4447",
+        website: "ramiro.info",
+        company: {
+            name: "Romaguera-Jacobson",
+            catchPhrase: "Face to face bifurcated interface",
+            bs: "e-enable strategic applications"
+        }
+    },
+    {
+        id: 4,
+        name: "Patricia Lebsack",
+        username: "Karianne",
+        email: "Julianne.OConner@kory.org",
+        address: {
+            street: "Hoeger Mall",
+            suite: "Apt. 692",
+            city: "South Elvis",
+            zipcode: "53919-4257",
+            geo: {
+                lat: "29.4572",
+                lng: "-164.2990"
+            }
+        },
+        phone: "493-170-9623 x156",
+        website: "kale.biz",
+        company: {
+            name: "Robel-Corkery",
+            catchPhrase: "Multi-tiered zero tolerance productivity",
+            bs: "transition cutting-edge web services"
+        }
+    },
+    {
+        id: 5,
+        name: "Chelsey Dietrich",
+        username: "Kamren",
+        email: "Lucio_Hettinger@annie.ca",
+        address: {
+            street: "Skiles Walks",
+            suite: "Suite 351",
+            city: "Roscoeview",
+            zipcode: "33263",
+            geo: {
+                lat: "-31.8129",
+                lng: "62.5342"
+            }
+        },
+        phone: "(254)954-1289",
+        website: "demarco.info",
+        company: {
+            name: "Keebler LLC",
+            catchPhrase: "User-centric fault-tolerant solution",
+            bs: "revolutionize end-to-end systems"
+        }
+    },
+    {
+        id: 6,
+        name: "Mrs. Dennis Schulist",
+        username: "Leopoldo_Corkery",
+        email: "Karley_Dach@jasper.info",
+        address: {
+            street: "Norberto Crossing",
+            suite: "Apt. 950",
+            city: "South Christy",
+            zipcode: "23505-1337",
+            geo: {
+                lat: "-71.4197",
+                lng: "71.7478"
+            }
+        },
+        phone: "1-477-935-8478 x6430",
+        website: "ola.org",
+        company: {
+            name: "Considine-Lockman",
+            catchPhrase: "Synchronised bottom-line interface",
+            bs: "e-enable innovative applications"
+        }
+    },
+    {
+        id: 7,
+        name: "Kurtis Weissnat",
+        username: "Elwyn.Skiles",
+        email: "Telly.Hoeger@billy.biz",
+        address: {
+            street: "Rex Trail",
+            suite: "Suite 280",
+            city: "Howemouth",
+            zipcode: "58804-1099",
+            geo: {
+                lat: "24.8918",
+                lng: "21.8984"
+            }
+        },
+        phone: "210.067.6132",
+        website: "elvis.io",
+        company: {
+            name: "Johns Group",
+            catchPhrase: "Configurable multimedia task-force",
+            bs: "generate enterprise e-tailers"
+        }
+    },
+    {
+        id: 8,
+        name: "Nicholas Runolfsdottir V",
+        username: "Maxime_Nienow",
+        email: "Sherwood@rosamond.me",
+        address: {
+            street: "Ellsworth Summit",
+            suite: "Suite 729",
+            city: "Aliyaview",
+            zipcode: "45169",
+            geo: {
+                lat: "-14.3990",
+                lng: "-120.7677"
+            }
+        },
+        phone: "586.493.6943 x140",
+        website: "jacynthe.com",
+        company: {
+            name: "Abernathy Group",
+            catchPhrase: "Implemented secondary concept",
+            bs: "e-enable extensible e-tailers"
+        }
+    },
+    {
+        id: 9,
+        name: "Glenna Reichert",
+        username: "Delphine",
+        email: "Chaim_McDermott@dana.io",
+        address: {
+            street: "Dayna Park",
+            suite: "Suite 449",
+            city: "Bartholomebury",
+            zipcode: "76495-3109",
+            geo: {
+                lat: "24.6463",
+                lng: "-168.8889"
+            }
+        },
+        phone: "(775)976-6794 x41206",
+        website: "conrad.com",
+        company: {
+            name: "Yost and Sons",
+            catchPhrase: "Switchable contextually-based project",
+            bs: "aggregate real-time technologies"
+        }
+    },
+    {
+        id: 10,
+        name: "Clementina DuBuque",
+        username: "Moriah.Stanton",
+        email: "Rey.Padberg@karina.biz",
+        address: {
+            street: "Kattie Turnpike",
+            suite: "Suite 198",
+            city: "Lebsackbury",
+            zipcode: "31428-2261",
+            geo: {
+                lat: "-38.2386",
+                lng: "57.2232"
+            }
+        },
+        phone: "024-648-3804",
+        website: "ambrose.net",
+        company: {
+            name: "Hoeger LLC",
+            catchPhrase: "Centralized empowering task-force",
+            bs: "target end-to-end models"
+        }
+    }
+];
+
+module.exports = USERS;
+//////////////////////////////////////////////////////////////////////////////////////////////
+src/services/UserService.js
+
+const USERS = require('../mockdata/users-mock')
+
+class UserService {
+    constructor() {
+
+    }
+    findAll() {
+        return USERS;
+    }
+}
+module.exports = new UserService();
+
+
+const {findAll} = require('./services/UserService');
+
+console.log(findAll())
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+How to async programming?
+
+All apis are not async.
+
+How to know async apis?
+
+async api are provided by javascript and node platform.
+
+callback function
+ are normal functions which are called because of event notification.
+ callbacks function are called by event loop(thread)
+ callback functions are called when result is ready only.
+
+callbacks are passed as parameter to another function(caller)
+
+
+1.api
+2.callback
+3.registeration by caller.
+
+Apis:
+javascript specific apis
+1.timers
+  -settimeout
+  -setinterval
+2.ajax - network calls
+3.websocket
+4.dom apis
+etc....
+
+Node platform api
+1.timers
+2.io apis
+3.networking apis
+etc....
+
+
+Styles of async programming:
+
+1.callback - core style
+  callbacks has some drawbacks.
+2.promises
+3.async await.
+
+Demo:
+
+1.callback based programming
+
+//timer and style is callback.
+
+// function delay(callback) {
+//     setTimeout(callback, 1000,'I am delayed');
+// }
+const delay = callback => setTimeout(callback, 1000, 'I am delayed')
+//passing function
+console.log('start')
+delay(data => console.log(data));
+console.log('end')
+
+const heartBeat = callback=>{
+  const timerId= setInterval(callback,1000,new Date())
+  //stop the interval
+  setTimeout(()=>{
+      console.log('stopping task')
+      //stopping
+       clearInterval(timerId);
+  },5000)
+
+}
+heartBeat(now=>console.log(now))
+/////////////////////////////////////////////////////////////////////////////////////////////
+//callback nesting/compostion
+
+const getUser = (resolve, reject) => {
+    //biz logic
+    let user = {
+        id: 1,
+        name: 'admin'
+    };
+    //  user = null;
+    let err = {
+        message: 'User not found'
+    }
+    if (user) {
+        setTimeout(resolve, 1000, user)
+    } else {
+        setTimeout(reject, 1000, err)
+    }
+};
+//Login function is called with user as input.
+const login = (user, resolve, reject) => {
+    let status = "Login success"
+    let err = "Login failed"
+    //bizlogic
+    if (user.name === 'admin') {
+        setTimeout(resolve, 1000, status)
+    } else {
+        setTimeout(reject, 1000, err)
+    }
+}
+
+const showpage = (status, resolve, reject) => {
+    //biz logic
+    if (status === 'Login success') {
+        setTimeout(resolve, 1000, { message: 'You are admin' });
+    } else {
+        setTimeout(reject, 1000, { message: 'You are guest' });
+    }
+
+}
+
+
+getUser(user => {
+    console.log('get User is called')
+    login(user, status => {
+        console.log('login is called')
+        showpage(status, who => {
+            console.log('show page is called')
+            console.log(who)
+        }, error => {
+            console.log(error)
+        })
+    }, err => {
+        console.log(err)
+    })
+}, err => {
+    console.log(err)
+})
+
+Questions:
+
+1.Whether this is able to understand quickly
+2.Whether this code is able to debug
+3.Whehter this code is scalable?
+4.whether this code is maintaiable?
+
+
+  "No" : This is what we call as "Callback hell".
+
+fs.readdir(source, function (err, files) {
+  if (err) {
+    console.log('Error finding files: ' + err)
+  } else {
+    files.forEach(function (filename, fileIndex) {
+      console.log(filename)
+      gm(source + filename).size(function (err, values) {
+        if (err) {
+          console.log('Error identifying file size: ' + err)
+        } else {
+          console.log(filename + ' : ' + values)
+          aspect = (values.width / values.height)
+          widths.forEach(function (width, widthIndex) {
+            height = Math.round(width / aspect)
+            console.log('resizing ' + filename + 'to ' + height + 'x' + height)
+            this.resize(width, height).write(dest + 'w' + width + '_' + filename, function(err) {
+              if (err) console.log('Error writing file: ' + err)
+            })
+          }.bind(this))
+        }
+      })
+    })
+  }
+})
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+///////////////////////////////////////////////////////////////////////////////////////////
+
+How to write better callback programming /async/non blocking ? or How to avoid callback hell?
+
+
+In 2005, JQUERY team started with working complex callback patterns, they found callback hell problem.
+
+They proposed a  Design pattern to write better callback programming(Async) programming.
+
+  "Promise".
+
+Promise is design pattern which hides complexity of callback patterns
+
+
+SInce Promise is design pattern, many people have implemented Promise design pattern.
+
+1.JQuery -first promise implementation
+2.many libs and frameworks
+
+2012 E6 Commit introduced promise design pattern  as  "Promise" Object  in javascript.
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+Promise Object:
+..............
+ 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
