@@ -799,16 +799,417 @@ SInce Promise is design pattern, many people have implemented Promise design pat
 Promise Object:
 ..............
  
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+Promises and non blocking,async and callback hell issues:
+.........................................................
+
+features of Promise Object:
+
+1.Promise by deafult is Async. Which implements timer api with 0 ms .
+
+Promise can be used with any async callback based  implementations.
+
+Objective:
+
+ To remove callbacks in async/non blocking code. write cleaner async programming.
+ To remove complex callback chaining code.
+
+
+Promise Implemenation:
+
+1. Create Promise Object from Promise contructor
+2. Create Promise object from factory apis 
+
+Promise object methods:
+1.then - success
+2.catch - errors
+3.finally - clean up
+factory api to create Promise object
+4.resolve
+5.reject
+.......................................
+6.all
+7.race
+
+Lets code using Promise
+
+Promise Object creations:
+
+1.factory apis.
+ resolve
+ reject
+ both
+
+
+//promise object
+//using factory methods
+//promise replaces callback function passing
+
+
+// function getSuccess(callback) {
+//     //factory
+//     setTimeout(callback, 0, "Success")
+// }
+
+// getSuccess(data => console.log(data));
+
+function getSuccess() {
+    //factory
+    return Promise.resolve('Success')
+}
+function getError() {
+    //factory
+    return Promise.reject('something went wrong!!')
+}
+
+function validate() {
+    let userName = "admin";
+    let password = "admin";
+    if (userName === 'admin' && password === 'admin') {
+        return Promise.resolve('Login success')
+    }
+    return Promise.reject('Login failed')
+}
+
+
+//
+// let result = getSuccess();
+// console.log(result)
+// result.then(data=>console.log(data))
+console.log('start')
+getSuccess()
+    .then(data => console.log(data));
+
+getError()
+    .catch(err => console.log(err));
+
+validate()
+    .then(status => console.log(status))
+    .catch(err => console.log(err))
+    .finally(() => console.log('done'))
+console.log('end')
+///////////////////////////////////////////////////////////////////////////////////
+//Promise constructors pattern is used to abstract existing callback based programming.
+
+function delay(callback) {
+    //i want to return some data using timer after 5000ms
+    setTimeout(callback, 5000, "Hello")
+}
+function delayWithPromise() {
+    return new Promise((resovle, reject) => {
+        setTimeout(resovle, 5000, "Hello")
+    });
+}
+
+delay(data => console.log(data))
+
+delayWithPromise()
+    .then(data => console.log(data))
+    .catch(err => console.log(err))
+    .finally(() => console.log('done'));
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+callback hell using promise 
+
+//callback nesting/compostion
+
+const getUser = () => {
+    //biz logic
+    let user = {
+        id: 1,
+        name: 'admin'
+    };
+    //  user = null;
+    let err = {
+        message: 'User not found'
+    }
+    if (user) {
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, 1000, user)
+        });
+    } else {
+        return new Promise((resolve, reject) => {
+            setTimeout(reject, 1000, err)
+        });
+    }
+};
+//Login function is called with user as input.
+const login = user => {
+    let status = "Login success"
+    let err = "Login failed"
+    //bizlogic
+    if (user.name === 'admin') {
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, 1000, status)
+        });
+    } else {
+        return new Promise((resolve, reject) => {
+            setTimeout(reject, 1000, err)
+        });
+    }
+}
+
+const showpage = status => {
+    //biz logic
+    if (status === 'Login success') {
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, 1000, { message: 'You are admin' });
+        });
+    } else {
+        return new Promise((resolve, reject) => {
+            setTimeout(reject, 1000, { message: 'You are guest' });
+        });
+    }
+
+}
+
+getUser()
+    .then(user => {
+        console.log('Get user is called', user)
+        login(user)
+            .then(status => {
+                console.log('login is called', status);
+                showpage(status)
+                    .then(pageres => {
+                        console.log('show page is called', pageres)
+                    })
+                    .catch(pageerror => console.log(pageerror));
+            })
+            .catch(err => {
+                console.log(err)
+            });
+    })
+    .catch(err => {
+        console.log(err)
+    });
+
+//simplified way
+
+getUser()
+    .then(user => {
+        console.log('Get user is called', user)
+        return login(user)
+    })
+    .then(status => {
+        console.log('login is called', status);
+        return showpage(status);
+    })
+    .then(page => {
+        console.log('show page is called', page)
+    })
+    .catch(err => {
+        console.log(err);
+    });
+
+getUser()
+    .then(user => login(user))
+    .then(status => showpage(status))
+    .then(page => console.log('show page is called', page))
+    .catch(err => {
+        console.log(err);
+    });
+
+
+// getUser(user => {
+//     console.log('get User is called')
+//     login(user, status => {
+//         console.log('login is called')
+//         showpage(status, who => {
+//             console.log('show page is called')
+//             console.log(who)
+//         }, error => {
+//             console.log(error)
+//         })
+//     }, err => {
+//         console.log(err)
+//     })
+// }, err => {
+//     console.log(err)
+// })
+
+
+The above code has solved callback hell issues, but still has some complixty, this 
+is called "Promise hell".
+
+How to avoid promise hell?
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+async and await ; es 7 keywords
+
+
+Promise Hell: Promise has limitions;
+......................
+
+1.Promise is still  complex when you start scalling complex async operations.
+
+2.Which is not readable ,which uses lot of then, catch blocks
+
+In order to write even simple complex async work flows ES 7 introduced
+a concept called "async await" keywords
+
+
+ It is simplest pattern of Promises.
+ It is promise driven only.
+
+         "Sync style of Async Code" 
+
+async key must be used with function declaration.
+await is used to pause async calls
+
+
+async ;
+
+-used in front of function declaration ; those functions are called async function.
+
+async is keyword must be used infront of function- async functions
+
+
+async function returns Promise Object ---promise.resolve
+
+
+async function getValue() {
+    return 100;  // return Promise.resolve(100)
+}
+async function getSomething() {
+    return Promise.resolve('something')
+}
+
+function getUser() {
+    return Promise.resolve({ id: 1, name: 'admin' })
+}
+
+console.log(getValue());
+getValue()
+    .then(data => console.log(data));
+
+getSomething()
+    .then(data => console.log(data));
+//how to read data from promise
+
+//async....await
+
+async function init() {
+    const user = await getUser();
+    console.log(user);
+}
+init();
 
 
 
+///////////////
+
+const getUser = () => {
+    //biz logic
+    let user = {
+        id: 1,
+        name: 'admin'
+    };
+    //user = null;
+    let err = {
+        message: 'User not found'
+    }
+    if (user) {
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, 1000, user)
+        });
+    } else {
+        return new Promise((resolve, reject) => {
+            setTimeout(reject, 1000, err)
+        });
+    }
+};
+//login; login function will be only if getUser returns user data.
+const login = (user) => {
+    //biz logic
+    return new Promise((resolve, reject) => {
+        if (user.name === 'admin') {
+            setTimeout(resolve, 1000, { message: 'Login Success' });
+        } else {
+            setTimeout(reject, 1000, { message: 'login failed' });
+        }
+    });
+
+}
+
+const showpage = (status) => {
+    //biz logic
+    return new Promise((resolve, reject) => {
+        if (status.message === 'Login Success') {
+            setTimeout(resolve, 1000, { message: 'You are admin' });
+        } else {
+            setTimeout(reject, 1000, { message: 'You are guest' });
+        }
+    });
+
+};
+
+async function init() {
+    try {
+        const user = await getUser();
+        const status = await login(user);
+        const page = await showpage(status);
+        console.log(user,status,page)
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+init();
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
+const USERS = require('../mockdata/users-mock')
+
+class UserService {
+    constructor() {
+
+    }
+    //sync
+    findAll() {
+        return USERS;
+    }
+    //async versions : callback version and promise 
+    findAllCallback(callback) {
+        setTimeout(callback, 5000, USERS);
+    }
+    findAllPromise() {
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, 5000, USERS);
+        });
+    }
+
+}
+module.exports = new UserService();
 
 
 
+const { findAll, findAllCallback, findAllPromise } = require('./services/UserService');
 
 
+async function main() {
+    //sync
+    // console.log(findAll());
+    //console.log('start')
+    //  findAllCallback(users=>console.log(users))
+    // findAllPromise()
+    //     .then(users => console.log(users))
+    //     .catch(err => console.log(err))
+    try {
+        const users = await findAllPromise();
+        console.log(users);
+    }
+    catch (err) {
+        console.log(err)
+    }
+    // console.log('end')
 
-
+}
+main();
 
 
 

@@ -38,7 +38,6 @@ const showpage = (status, resolve, reject) => {
 
 }
 
-
 getUser(user => {
     console.log('get User is called')
     login(user, status => {
