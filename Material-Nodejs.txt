@@ -1210,6 +1210,150 @@ async function main() {
 
 }
 main();
+////////////////////////////////////////////////////////////////////////////////////////////
+
+NODE APIS:
+.........
+
+Types of modules:
+
+1.custom module
+  built by us
+2.built in modules
+   provided by nodes
+  
+3.provided by third party/community
+  libs,frameworks
+ 
+1.node in built modules
+
+
+1.os module
+2.events module
+3.file system module
+4.path
+5.http module
+
+note: any module is distributed as javascript file
+
+OS: Operating System
+....................
+The os module provides operating system-related utility methods and properties. 
+It can be accessed using:
+  os.js  ------> const ? =  require('os')
+
+const { arch,hostname,cpus } = require('os');
+
+console.log('Operating system infromation')
+console.log(arch())
+console.log(hostname())
+console.log(cpus())
+
+
+
+
+./ vs ''
+.........
+
+ require('./services/TODOService');
+  ->here you can see ./
+  ./ -current dir
+
+ require('os'); => 
+  -here no ./ 
+
+Why?
+
+Note : if you are java devp, you know the classpath , how it works?
+
+
+require('os');
+
+Node internally uses a search algorthim,node always looks the folder called
+ "node_modules" in the current project, if not , then it searches, the node in built 
+installtion folder---c:/pf/node/node_nodules--if it finds it will pick up from there else it will throw error.
+
+require('./services/TODOService');
+   it will lookup in the current dir or sub dirs only.
+
+nternal/modules/cjs/loader.js:800
+    throw err;
+    ^
+
+Error: Cannot find module 'osxx'
+Require stack:
+- C:\session\ibm\feb\nodems\mynodeapps\src\index.js
+[90m    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:797:15)[39m
+[90m    at Function.Module._load (internal/modules/cjs/loader.js:690:27)[39m
+[90m    at Module.require (internal/modules/cjs/loader.js:852:19)[39m
+[90m    at require (internal/modules/cjs/helpers.js:74:18)[39m
+    at Object.<anonymous> (C:\session\ibm\feb\nodems\mynodeapps\src\index.js:1:32)
+[90m    at Module._compile (internal/modules/cjs/loader.js:959:30)[39m
+[90m    at Object.Module._extensions..js (internal/modules/cjs/loader.js:995:10)[39m
+[90m    at Module.load (internal/modules/cjs/loader.js:815:32)[39m
+[90m    at Function.Module._load (internal/modules/cjs/loader.js:727:14)[39m
+[90m    at Function.Module.runMain (internal/modules/cjs/loader.js:1047:10)[39m {
+  code: [32m'MODULE_NOT_FOUND'[39m,
+  requireStack: [ [32m'C:\\session\\ibm\\feb\\nodems\\mynodeapps\\src\\index.js'[39m ]
+}
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+Event Emitter module;
+
+how to build application event driven programming.
+
+Much of the Node.js core API is built around an idiomatic asynchronous event-driven architecture in which certain kinds of objects (called "emitters") emit named events that cause Function objects ("listeners") to be called.
+const EventEmitter = require('events');
+
+const eventEmiter = new EventEmitter();
+
+//Pub - sub
+
+//register event :Listener
+eventEmiter.on('hello', (data) => {
+    console.log(data);
+});
+
+//Publisher : to emit event and send data
+
+eventEmiter.emit('hello','Hello')
+
+class OrderService extends EventEmitter {
+    constructor() {
+        super();
+        //listener regeration ; event represents object having data .
+        this.on('sales', event => {
+            console.log(`Got ${event.orderId} ${event.qty} ${event.value}`)
+        })
+    }
+    placeOrder(order) {
+        //when ever place order is called, it can emit event
+        setTimeout(() => {
+          //async event driven programming
+            this.emit('sales', order);
+        }, 1000)
+    }
+
+}
+//start
+function startApp() {
+    let orderService = new OrderService();
+    //call biz api
+    orderService.placeOrder({ orderId: 'OD001', qty: 100, value: 1000 })
+}
+startApp();
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+IO
+ -Fs
+Network
+ -web
+ 
+npm
+frameworks
 
 
 
