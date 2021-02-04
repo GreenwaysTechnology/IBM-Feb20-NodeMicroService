@@ -2192,10 +2192,205 @@ install tools as project specific. --save-dev
   }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////
-                              How to Build Restfull Web Apps
-                                      
-
+                              How to Build Restfull Web Apps                                     
 Framework: Express.js
+
+What is express?
+Express Fast, unopinionated, minimalist web framework for Node.js
+
+express is built on top of http core module.
+
+What express provides?
+
+-To build rest api facility fast using routers
+->provides of lot of middlewares(utility libs) for database access,secuity,template....
+
+
+How to start express project
+
+-from begining
+
+-using tool express-generator
+  used to create quick web apps...
+   
+
+ npm install express --save
+
+
+Express Key concepts: in express every thing object
+
+Objects in express
+
+1.Application
+  We call Container object which other objects
+  entry and exit of an application
+  application is created by calling function
+
+2.Request
+
+4.Response
+
+5.Router
+
+1.Application object roll:
+
+Routing HTTP requests; see for example, app.METHOD and app.param.
+Configuring middleware; see app.route.
+Rendering HTML views; see app.render.
+Registering a template engine; see app.engine.
+
+const express  = require('express');
+
+//create application object
+const app =  express();
+
+//create End Points
+
+app.get('/',(req,res)=>{
+    res.end('Home')
+});
+app.get('/api/message/hai',(req,res)=>{
+    res.end('hai')
+});
+app.get('/api/message/hello',(req,res)=>{
+    res.end('hello')
+});
+app.get('/api/message/greet',(req,res)=>{
+    res.end('greet')
+});
+app.post('/api/message/save',(req,res)=>{
+    res.end('save')
+})
+app.put('/api/message/update',(req,res)=>{
+    res.end('put')
+})
+app.delete('/api/message/delete',(req,res)=>{
+    res.end('delete')
+})
+
+//start server
+
+app.listen(3000,()=>console.log('express server is running!!!'))
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Modualirty:
+...........
+
+
+const express = require('express');
+const { findAll } = require('../services/userservice');
+
+//create router object
+const userRouter = express.Router();
+
+userRouter.get('/list', async (req, res) => {
+    const users = await findAll();
+    res.json(users)
+});
+
+module.exports = userRouter;
+
+
+const express = require('express');
+const { listTodos } = require('../services/todoservice');
+
+//create router object
+const todoRouter = express.Router();
+
+todoRouter.get('/list', async (req, res) => {
+    const todos = await listTodos();
+    res.json(todos)
+});
+
+module.exports = todoRouter;
+
+
+const TODOS = require('../mock-data/todos');
+
+class TodoService {
+    constructor() {
+    }
+    listTodos() {
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, 5000, TODOS);
+        });
+    }
+ 
+}
+
+module.exports = new TodoService();
+
+
+
+const USERS = require('../mock-data/users-mock');
+
+class UserService {
+    constructor() {
+    }
+    findAll() {
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, 5000, USERS);
+        });
+    }
+ 
+}
+
+module.exports = new UserService();
+
+
+
+
+const express = require('express');
+const userRouter = require('./routers/userrouter');
+const todoRouter = require('./routers/todorouter')
+
+const app = express();
+
+//Linking UserRouter with main app
+app.use('/api/users',userRouter);
+app.use('/api/todos',todoRouter);
+
+
+app.listen(3000, () => console.log('Express server is running!!!'))
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+Middlewares:
+
+ - plugins , can  be plugged
+
+
+types of middlewares
+
+1.built in middlewares
+2.third party middleware
+3.custom middleares.
+
+Use case :
+ How to read JSON input. Express server need to read json which was submitted by endusers
+
+User will submit as json --- express need to convert into javascript object.
+
+any middleware is distributed as node modules only, so you need to install
+
+
+
+Steps for any middleware integration:
+......................................
+
+1.npm install body-parser
+
+2.Register middleware - in the main app
+const bodyParser = require('body-parser')
+// parse application/json
+app.use(bodyParser.json())
+
+3.use the middleware;
+////////////////////////////////////////////////////////////////////////////////////////////
+
+Express application generator
+.............................
+
 
 
 
