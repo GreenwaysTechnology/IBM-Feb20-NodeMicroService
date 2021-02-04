@@ -1,0 +1,20 @@
+{
+  "name": "mynodeapps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node src/app.js",
+    "subu": "node src/app.js"
+  },
+  "author": "Subramanian Murugan",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.20"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1"
+  }
+}
