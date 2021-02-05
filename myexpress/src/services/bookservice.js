@@ -10,7 +10,7 @@ class BookService {
     findAll() {
         return new Promise((resolve, reject) => {
             db.books.find((err, docs) => {
-                if (err) {
+                if (err) {   
                     reject(err)
                 }
                 resolve(docs);
